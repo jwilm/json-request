@@ -1,0 +1,18 @@
+[package]
+name = "json-request"
+version = "0.1.0"
+authors = ["Joe Wilm <joe@jwilm.com>"]
+license = "MIT"
+description = "Make JSON HTTP requests with automatic de/serialization"
+homepage = "https://github.com/jwilm/json-request"
+documentation = "https://jwilm.github.io/json-request/json_request/"
+
+[dependencies]
+hyper = "*"
+rustc-serialize = "*"
+
+[dev-dependencies]
+router = "*"
+bodyparser = "*"
+iron = "*"
+
