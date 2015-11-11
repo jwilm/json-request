@@ -28,7 +28,7 @@ struct ResponseData {
 let data = RequestData { ping: true };
 
 // Actually build the request
-let res = request(Method::Post, "http://example.com/", data);
+let res = request(Method::Post, "http://example.com/", Some(data));
 
 // Request returns a Result<Option<D>>; hence, two unwrap calls. The wrapped
 // value has been deserialized from a JSON response.

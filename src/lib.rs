@@ -113,7 +113,7 @@ impl ::std::fmt::Display for Error {
 ///
 /// # fn main() {
 /// let data = RequestData { ping: true };
-/// let res = request(Method::Post, "http://example.com/ping", data);
+/// let res = request(Method::Post, "http://example.com/ping", Some(data));
 /// // Request returns a Result<Option<D>>; hence, two unwrap calls
 /// let pong: ResponseData = res.unwrap().unwrap();
 /// # }
@@ -136,22 +136,33 @@ impl ::std::fmt::Display for Error {
 /// # }
 /// # fn main() {
 /// # let data = RequestData { ping: true };
-/// let res = request::<_, ResponseData>(Method::Post, "http://example.com/ping", data);
+/// let res = request::<_, ResponseData>(Method::Post, "http://example.com/ping", Some(data));
 /// let pong = res.unwrap().unwrap();
 /// # }
 /// ```
-pub fn request<S, D>(method: Method, url: &str, data: S) -> Result<Option<D>>
+pub fn request<S, D>(method: Method, url: &str, data: Option<S>) -> Result<Option<D>>
 where S: Encodable, D: Decodable {
-    let payload = try!(json::encode(&data));
     let mut body = String::new();
 
     let client = Client::new();
     println!("url: {}", url);
-    let builder = client.request(method, url)
-                        .header(header::Connection::close())
-                        .body(&payload[..]);
 
-    let mut res = try!(builder.send());
+    let mut res = match data {
+        Some(inner) => {
+            let payload = try!(json::encode(&inner));
+            let builder = client.request(method, url)
+                                .header(header::Connection::close())
+                                .body(&payload[..]);
+
+            try!(builder.send())
+        },
+        None => {
+            let builder = client.request(method, url)
+                                .header(header::Connection::close());
+
+            try!(builder.send())
+        }
+    };
 
     Ok(match res.status.class() {
         StatusClass::Success => {

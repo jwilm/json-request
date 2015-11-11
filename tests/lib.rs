@@ -70,5 +70,5 @@ fn ping_pong() {
 
     // When this fails, the error I get it "called Option::unwrap() on a None value" which is not
     // helpful for resolving what the problem is.
-    let res: ResponseData = request(Method::Post, &(url("/ping"))[..], req).unwrap().unwrap();
+    let res: ResponseData = request(Method::Post, &(url("/ping"))[..], Some(req)).unwrap().unwrap();
 }
