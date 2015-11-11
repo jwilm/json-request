@@ -3,6 +3,8 @@ json-request
 
 Rust library for talking to JSON HTTP servers
 
+[Documentation][]
+
 ## Usage
 
 One method, `request`, is exposed which makes HTTP requests and provides
@@ -49,3 +51,5 @@ git = "https://github.com/jwilm/json-request"
 - *TODO*: The `data` parameter should be url encoded and appended to the URL for
   GET requests.
 - *TODO*: Would be nice to have a DSL macro that's a little more user friendly
+
+[Documentation]: http://jwilm.github.io/json-request/json_request
