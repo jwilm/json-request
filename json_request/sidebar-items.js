@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Error","Error wrapper"],["Method","The Request Method (VERB)"]],"fn":[["request","Make an HTTP request"]],"type":[["Result",""]]});
