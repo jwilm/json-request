@@ -44,10 +44,12 @@ struct StackListener {
 }
 
 impl StackListener {
-    pub fn new(port: u16) -> StackListener {
-        let host = format!("0.0.0.0:{}", port);
+    pub fn new() -> StackListener {
+        let server = PingServer::build().listen_with("0.0.0.0:0", 1, Protocol::Http).unwrap();
+        let host = format!("{}", server.socket);
+
         StackListener {
-            server: PingServer::build().listen_with(&host[..], 1, Protocol::Http).unwrap(),
+            server: server,
             host: host
         }
     }
@@ -66,7 +68,7 @@ impl Drop for StackListener {
 #[test]
 #[allow(unused_variables)]
 fn with_data() {
-    let server = StackListener::new(40918);
+    let server = StackListener::new();
 
     let req = RequestData { ping: true };
 
@@ -79,7 +81,7 @@ fn with_data() {
 #[test]
 #[allow(unused_variables)]
 fn none_data() {
-    let server = StackListener::new(40919);
+    let server = StackListener::new();
 
     let url = server.url("/ping");
     let res: ResponseData = request(Method::Post, &url[..], None::<u8>).unwrap().unwrap();
