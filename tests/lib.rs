@@ -72,3 +72,13 @@ fn ping_pong() {
     // helpful for resolving what the problem is.
     let res: ResponseData = request(Method::Post, &(url("/ping"))[..], Some(req)).unwrap().unwrap();
 }
+
+#[test]
+#[allow(unused_variables)]
+fn ping_pong_none_data() {
+    let server = StackListener::new();
+
+    // When this fails, the error I get it "called Option::unwrap() on a None value" which is not
+    // helpful for resolving what the problem is.
+    let res: ResponseData = request(Method::Post, &(url("/ping"))[..], None).unwrap().unwrap();
+}
