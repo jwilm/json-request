@@ -38,20 +38,22 @@ struct ResponseData {
     pong: bool
 }
 
-const HOST: &'static str = "0.0.0.0:12345";
-fn url(frag: &str) -> String {
-    format!("http://{}{}", HOST, frag)
-}
-
 struct StackListener {
-    server: ::hyper::server::Listening
+    server: ::hyper::server::Listening,
+    host: String,
 }
 
 impl StackListener {
-    pub fn new() -> StackListener {
+    pub fn new(port: u16) -> StackListener {
+        let host = format!("0.0.0.0:{}", port);
         StackListener {
-            server: PingServer::build().listen_with(HOST, 1, Protocol::Http).unwrap()
+            server: PingServer::build().listen_with(&host[..], 1, Protocol::Http).unwrap(),
+            host: host
         }
+    }
+
+    pub fn url(&self, path: &str) -> String {
+        format!("http://{}{}", self.host, path)
     }
 }
 
@@ -63,12 +65,22 @@ impl Drop for StackListener {
 
 #[test]
 #[allow(unused_variables)]
-fn ping_pong() {
-    let server = StackListener::new();
+fn with_data() {
+    let server = StackListener::new(40918);
 
     let req = RequestData { ping: true };
 
     // When this fails, the error I get it "called Option::unwrap() on a None value" which is not
     // helpful for resolving what the problem is.
-    let res: ResponseData = request(Method::Post, &(url("/ping"))[..], Some(req)).unwrap().unwrap();
+    let url = server.url("/ping");
+    let res: ResponseData = request(Method::Post, &url[..], Some(req)).unwrap().unwrap();
+}
+
+#[test]
+#[allow(unused_variables)]
+fn none_data() {
+    let server = StackListener::new(40919);
+
+    let url = server.url("/ping");
+    let res: ResponseData = request(Method::Post, &url[..], None::<u8>).unwrap().unwrap();
 }

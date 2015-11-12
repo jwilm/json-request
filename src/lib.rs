@@ -93,6 +93,8 @@ impl ::std::fmt::Display for Error {
 /// `rustc_serialize::Encodable`, and the result type must implement `rustc_serialize::Decodable`.
 /// This can usually be achieved with `#[derive(RustcEncodable)]` and `#[derive(RustcDecodable)]`.
 ///
+/// **Note:** If not providing data, you must provide a parameterized `None` such as `None::<u8>`.
+///
 /// # Example
 ///
 /// ```no_run
