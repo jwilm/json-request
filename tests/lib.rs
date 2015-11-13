@@ -12,7 +12,7 @@ use iron::prelude::*;
 use iron::status;
 use iron::Protocol;
 
-use json_request::{request, Method};
+use json_request::{request, request_str, Method};
 
 struct PingServer;
 
@@ -85,4 +85,12 @@ fn none_data() {
 
     let url = server.url("/ping");
     let res: ResponseData = request(Method::Post, &url[..], None::<u8>).unwrap().unwrap();
+}
+
+#[test]
+fn str_data() {
+    let server = StackListener::new();
+    let url = server.url("/ping");
+    let res = request_str(Method::Post, &url[..], Some("arst")).unwrap().unwrap();
+    assert_eq!(&res[..], "{\"pong\": true}");
 }

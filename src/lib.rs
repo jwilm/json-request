@@ -174,3 +174,35 @@ where S: Encodable, D: Decodable {
         _ => None
     })
 }
+
+pub fn request_str(method: Method, url: &str, data: Option<&str>) -> Result<Option<String>> {
+
+    let mut body = String::new();
+
+    let client = Client::new();
+    println!("url: {}", url);
+
+    let mut res = match data {
+        Some(inner) => {
+            let builder = client.request(method, url)
+                                .header(header::Connection::close())
+                                .body(inner);
+
+            try!(builder.send())
+        },
+        None => {
+            let builder = client.request(method, url)
+                                .header(header::Connection::close());
+
+            try!(builder.send())
+        }
+    };
+
+    Ok(match res.status.class() {
+        StatusClass::Success => {
+            try!(res.read_to_string(&mut body));
+            Some(body)
+        },
+        _ => None
+    })
+}
