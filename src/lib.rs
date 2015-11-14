@@ -154,6 +154,7 @@ where S: Encodable, D: Decodable {
             let payload = try!(json::encode(&inner));
             let builder = client.request(method, url)
                                 .header(header::Connection::close())
+                                .header(header::ContentType::json())
                                 .body(&payload[..]);
 
             try!(builder.send())
@@ -186,6 +187,7 @@ pub fn request_str(method: Method, url: &str, data: Option<&str>) -> Result<Opti
         Some(inner) => {
             let builder = client.request(method, url)
                                 .header(header::Connection::close())
+                                .header(header::ContentType::json())
                                 .body(inner);
 
             try!(builder.send())
