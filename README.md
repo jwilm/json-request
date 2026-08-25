@@ -7,7 +7,7 @@ Rust library for talking to JSON HTTP servers
 
 ## ARCHIVAL NOTICE
 
-This project has been superceded a very long time ago by reqwest/serde/etc.
+This project has been superseded a very long time ago by reqwest/serde/etc.
 You should not use this library for your projects.
 
 ## Usage
