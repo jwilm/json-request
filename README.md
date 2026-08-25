@@ -5,6 +5,11 @@ Rust library for talking to JSON HTTP servers
 
 [Documentation][]
 
+## ARCHIVAL NOTICE
+
+This project has been superceded a very long time ago by reqwest/serde/etc.
+You should not use this library for your projects.
+
 ## Usage
 
 One method, `request`, is exposed which makes HTTP requests and provides
